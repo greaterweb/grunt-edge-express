@@ -1,0 +1,43 @@
+{
+  "title": "Grunt Express Server Task",
+  "name": "grunt-express",
+  "description": "Grunt task to luanch an Express Server for testing your project.",
+  "version": "0.1.0",
+  "keywords": [
+    "gruntplugin"
+  ],
+  "contributors": [
+    {
+      "name": "Ron Edgecomb",
+      "email": "ron@greaterwebdesign.com",
+      "web": "http://greaterwebdesign.com"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Ron Edgecomb",
+      "email": "ron@greaterwebdesign.com",
+      "web": "http://greaterwebdesign.com"
+    }
+  ],
+  "dependencies": {
+    "express": "~3.2.5",
+    "grunt": "~0.4.1",
+    "grunt-contrib-livereload": "~0.1.2",
+    "underscore": "~1.4.4"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.5.4",
+    "matchdep": "~0.1.2"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "repositories" : [
+    {
+      "type": "git",
+      "url": "https://github.com/greaterweb/grunt-express.git"
+    }
+  ]
+}
