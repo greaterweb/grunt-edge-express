@@ -42,7 +42,7 @@ module.exports = function (grunt) {
 
         if (!fs.existsSync(options.configPath)) {
             grunt.log.error('Config for express missing at ' + options.configPath);
-            options.configPath = path.resolve('tasks/lib/express/config.js');
+            options.configPath = path.resolve(__dirname + '/lib/express/config.js');
             grunt.log.ok('Missing express config resolved, default used at ' + options.configPath);
         }
         expressUtil.loadExpressConfig(options.configPath, 'common');
@@ -50,7 +50,7 @@ module.exports = function (grunt) {
 
         if (!fs.existsSync(options.routesPath)) {
             grunt.log.error('Routes for express missing at ' + options.routesPath);
-            options.routesPath = path.resolve('tasks/lib/express/routes.js');
+            options.routesPath = path.resolve(__dirname + '/lib/express/routes.js');
             grunt.log.ok('Missing express routes resolved, default used at ' + options.routesPath);
         }
 
