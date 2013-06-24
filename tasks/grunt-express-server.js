@@ -2,7 +2,6 @@
 
 var path = require('path'),
     fs = require('fs'),
-    _ = require('underscore'),
     forever = require('forever-monitor'),
     util = require('util'),
     inspect = function (obj) {
@@ -75,7 +74,7 @@ module.exports = function (grunt) {
         if (!servers.length) {
             grunt.log.error('Nothing to restart, no Express servers are running');
         } else {
-            _.each(servers, function (server) {
+            grunt.util._(servers).forEach(function (server) {
                 if (!target || target === server[0]) {
                     grunt.log.ok('Attempting to restart Express server for: ' + server[0]);
                     if (server[1].running) {
@@ -90,7 +89,7 @@ module.exports = function (grunt) {
         if (!servers.length) {
             grunt.log.error('Nothing to stop, no Express servers are running');
         } else {
-            _.each(servers, function (server) {
+            grunt.util._(servers).forEach(function (server) {
                 if (!target || target === server[0]) {
                     grunt.log.ok('Attempting to stop Express server for: ' + server[0]);
                     if (server[1].running) {

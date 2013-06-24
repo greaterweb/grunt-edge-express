@@ -1,77 +1,136 @@
-## Grunt Express Server
+# grunt-edge-express
 
-Grunt task to start express server for project.
+> A Grunt task to luanch an Express server for project testing
 
-### Grunt Tasks
+## Getting Started
+This plugin requires Grunt `~0.4.1`
 
-    grunt express
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
-Task to start all configured express servers.
+```shell
+npm install grunt-edge-express --save-dev
+```
 
-    grunt express:restart
+Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
-Task to restart all configured express servers.
+```js
+grunt.loadNpmTasks('grunt-edge-express');
+```
 
-    grunt express:restart:target_name
+## The "express" task
 
-Task to restart a specifc target express server.
+### Overview
+In your project's Gruntfile, add a section named `express` to the data object passed into `grunt.initConfig()`.
 
-    grunt express:stop
+```js
+grunt.initConfig({
+  express: {
+    options: {
+      // Task-specific options go here.
+    },
+    your_target: {
+      // Target-specific file lists and/or options go here.
+    },
+  },
+})
+```
 
-Task to stop all configured express servers.
+### Options
 
-    grunt express:stop:target_name
+#### options.port
+Type: `Integer`
+Default value: `3000`
 
-Task to stop specific target express server.
+The port on which the express server will respond. The task will fail if the specified port is already in use. You can use the special values 0 or '?' to use a system-assigned port.
 
-### Grunt Config
-
-#### hostname
-
-Type: `String` Default: `localhost`
+#### options.hostname
+Type: `String`
+Default value: `'localhost'`
 
 The hostname the express server will use.
 
-#### port
+#### options.baseURL
+Type: `String`
+Default value: `'/'`
 
-Type: `Integer` Default: `3000`
+String appended to the end of the `hostname:port` URL, must start with a leading slash.
 
-The port on which the express server will respond. The task will fail if the specified port is already in use.
+#### options.configPath
 
-#### baseURL
-
-Type: `String` Default: `/`
-
-String appended to the end of the `hostname:port` URL.
-
-#### configPath
-
-Type: `String` Default: `path.resolve('express/server.js')`
+Type: `String` 
+Default: `path.resolve('express/server.js')`
 
 Location of the `server.js` file used to include project specific express configuration rules.
 
-#### debug
+#### options.debug
 
-Type: `Boolean` Default: `true`
+Type: `Boolean` 
+Default: `true`
 
 Flag to determine if `stdout` of server process will be displayed.
 
-#### port
+#### IMPORTANT: Option Usage in Express Configuration
+Please note that `port`, `hostname`, and `baseURL` are passed as options to your server configuration file defined at `configPath`. Failing to provide option parsing and implementing injection of these options into your server configuration may result in issues or errors with your Express server. 
 
-Type: `Integer` Default: `3000`
+It is recommended using modules such as [nopt](https://github.com/isaacs/nopt) for option parsing within your server configuration file.
 
-The port on which the express server will respond. The task will fail if the specified port is already in use.
+```js
+// include the nopt module
+var nopt = require('nopt');
 
-## Contributing to Project
+// get options based on a specific configuration
+// plase see https://github.com/isaacs/nopt for
+// additional usage examples
+var options = nopt({
+    hostname: String,
+    port: Number,
+    baseURL: String
+},{
+    port: ['--port'],
+    hostname: ['--hostname'],
+    baseURL: ['--baseurl']
+}, process.argv, 2);
 
-In order to contribute to this project it is expected that you have `node`, `npm` and `grunt-cli` installed on your machine.
+// supply default values if option values are not present
+var port = options.port || 3000,
+    hostname = options.hostname || 'localhost',
+    baseURL = options.baseURL || '/';
+...
+// use in your server configuraiton
+server.listen(port, hostname, function () {
+    console.log('Express server started on port ' + port);
+});
+```
 
-All other project dependencies are outlined in the package.json file.
+### Usage Examples
 
-### Getting Started
+#### Default Options
+In this example, an Express server instance will be setup based on the default configuraiton parameters.
 
-    git clone https://github.com/greaterweb/grunt-express.git
+```js
+grunt.initConfig({
+    express: {
+        server: {}
+    }
+})
+```
 
-After you have cloned the repository from the project root run
+#### Custom Options
+In this example, custom options are used to configure the Express server with port `9000` and a base url of `/plugin`. This produces a destination of `http://localhost:9000/plugin`.
 
-    npm install
+```js
+grunt.initConfig({
+    express: {
+        server: {
+            port: 9000,
+            baseURL: '/plugin'
+        }
+    }
+})
+```
+
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
+## Release History
+_(Nothing yet)_
