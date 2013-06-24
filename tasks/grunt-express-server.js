@@ -20,8 +20,8 @@ module.exports = function (grunt) {
                 hostname: 'localhost',
                 port: 3000,
                 baseURL: '/',
-                basePath: path.resolve('app'),
-                configPath: path.resolve('express/server.js')
+                configPath: path.resolve('express/server.js'),
+                debug: true
             }),
             targetName = this.target;
 
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
 
         var server = new (forever.Monitor)(options.configPath, {
             max: 3,
-            silent: false,
+            silent: true,
             options: ['--port=' + options.port, '--hostname=' + options.hostname, '--baseurl=' + options.baseURL]
         });
 
@@ -52,22 +52,53 @@ module.exports = function (grunt) {
             done();
         });
 
+        if (options.debug) {
+            server.on('stdout', function (msg) {
+                grunt.log.write(targetName + ' >>', msg.toString());
+            });
+        }
+
+        server.start();
+
         servers.push([targetName, server]);
 
         // make sure all server are taken down when grunt exits.
         process.on('exit', function() {
-            server.child.kill();
+            if (server.running) {
+                server.stop();
+            }
         });
-
-        server.start();
 
     });
 
-    grunt.registerTask('express:stop', 'Stop all running express servers', function() {
-        _.each(servers, function (server) {
-            grunt.log.ok('Attempting to stop Express server for: ' + server[0]);
-            server[1].child.kill();
-        });
+    grunt.registerTask('express:restart', 'Stop all running express servers', function(target) {
+        if (!servers.length) {
+            grunt.log.error('Nothing to restart, no Express servers are running');
+        } else {
+            _.each(servers, function (server) {
+                if (!target || target === server[0]) {
+                    grunt.log.ok('Attempting to restart Express server for: ' + server[0]);
+                    if (server[1].running) {
+                        server[1].restart();
+                    }
+                }
+            });
+        }
+    });
+
+    grunt.registerTask('express:stop', 'Stop all running express servers', function(target) {
+        if (!servers.length) {
+            grunt.log.error('Nothing to stop, no Express servers are running');
+        } else {
+            _.each(servers, function (server) {
+                if (!target || target === server[0]) {
+                    grunt.log.ok('Attempting to stop Express server for: ' + server[0]);
+                    if (server[1].running) {
+                        server[1].stop();
+                    }
+                }
+            });
+        }
     });
 
     grunt.registerTask('express:keepalive', 'Keep express running', function() {

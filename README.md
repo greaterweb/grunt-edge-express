@@ -6,11 +6,23 @@ Grunt task to start express server for project.
 
     grunt express
 
-Task to start all configured express projects.
+Task to start all configured express servers.
+
+    grunt express:restart
+
+Task to restart all configured express servers.
+
+    grunt express:restart:target_name
+
+Task to restart a specifc target express server.
 
     grunt express:stop
 
-Task to stop all configured express projets.
+Task to stop all configured express servers.
+
+    grunt express:stop:target_name
+
+Task to stop specific target express server.
 
 ### Grunt Config
 
@@ -32,29 +44,23 @@ Type: `String` Default: `/`
 
 String appended to the end of the `hostname:port` URL.
 
-#### basePath
-
-Type: `String` Default: `path.resolve('app')`
-
-The base (or root) directory from which files will be served. Defaults to the `app` directory. 
-
 #### configPath
 
-Type: `String` Default: `path.resolve('express/config.js')`
+Type: `String` Default: `path.resolve('express/server.js')`
 
-Location of the `config.js` file used to include project specific express configuration rules.
+Location of the `server.js` file used to include project specific express configuration rules.
 
-#### environment
+#### debug
 
-Type: `String` Default: `development`
+Type: `Boolean` Default: `true`
 
-Configuration environment to use when starting express server.
+Flag to determine if `stdout` of server process will be displayed.
 
-#### routesPath
+#### port
 
-Type: `String` Default: `path.resolve('express/routes.js')`
+Type: `Integer` Default: `3000`
 
-Location of the `routes.js` file used to include project specific express routing rules.
+The port on which the express server will respond. The task will fail if the specified port is already in use.
 
 ## Contributing to Project
 
