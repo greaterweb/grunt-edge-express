@@ -18,27 +18,8 @@ module.exports = function (grunt) {
             ]
         },
         express: {
-            test: {
-                options: {
-                    environment: 'production'
-                }
-            },
-            test2: {
-                options: {
-                    port: 9000
-                }
-            },
-            test3: {
-                options: {
-                    livereload: false
-                }
-            },
-            test4: {
-                options: {
-                    static: {
-                        '/': 'mama'
-                    }
-                }
+            server: {
+
             }
         }
     });
