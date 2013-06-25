@@ -23,11 +23,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // Before generating any new files, remove any previously-created files.
-        clean: {
-            tests: ['tmp']
-        },
-
         // Configuration to be run (and then tested).
         express: {
             default_options: {
@@ -54,9 +49,8 @@ module.exports = function(grunt) {
     // These plugins provide necessary tasks.
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
-    // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-    // plugin's task(s), then test the result.
-    grunt.registerTask('test', ['clean', 'express', 'nodeunit']);
+    // start express then run tests
+    grunt.registerTask('test', ['express', 'nodeunit']);
 
     // By default, lint and run all tests.
     grunt.registerTask('default', ['jshint', 'test']);

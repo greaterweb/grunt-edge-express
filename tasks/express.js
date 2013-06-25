@@ -1,20 +1,33 @@
+/*
+ * grunt-edge-express
+ * https://github.com/greaterweb/grunt-edge-express
+ *
+ * Copyright (c) 2013 Ron Edgecomb II
+ * Licensed under the MIT license.
+ */
+
 'use strict';
 
-var path = require('path'),
-    fs = require('fs'),
-    forever = require('forever-monitor'),
+var fs = require('fs'),
+    path = require('path'),
     util = require('util'),
-    inspect = function (obj) {
-        return util.inspect(obj, false, 4, true);
-    };
+    forever = require('forever-monitor');
 
-module.exports = function (grunt) {
+function inspect(obj) {
+    return util.inspect(obj, false, 4, true);
+}
+
+module.exports = function(grunt) {
+
+  // Please see the Grunt documentation for more information regarding task
+  // creation: http://gruntjs.com/creating-tasks
 
     var portsInUse = [],
         servers = [];
 
     grunt.registerMultiTask('express', 'Start an express web server.', function () {
         var done = this.async(),
+            // Merge task-specific and/or target-specific options with these defaults.
             options = this.options({
                 hostname: 'localhost',
                 port: 3000,
@@ -44,7 +57,7 @@ module.exports = function (grunt) {
         var server = new (forever.Monitor)(options.configPath, {
             max: 3,
             silent: true,
-            options: ['--port=' + options.port, '--hostname=' + options.hostname, '--baseurl=' + options.baseURL]
+            options: ['--port=' + options.port, '--hostname=' + options.hostname, '--baseurl=' + options.baseURL, '--baseURL=' + options.baseURL]
         });
 
         server.on('start', function () {

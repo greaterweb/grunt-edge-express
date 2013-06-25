@@ -10,16 +10,16 @@ var http = require('http'),
 var options = nopt({
     hostname: String,
     port: Number,
-    baseURL: String
+    baseurl: String
 },{
     port: ['--port'],
     hostname: ['--hostname'],
-    baseURL: ['--baseurl']
+    baseurl: ['--baseurl']
 }, process.argv, 2);
 
 var port = options.port || 3000,
     hostname = options.hostname || 'localhost',
-    baseURL = options.baseURL || '/';
+    baseURL = options.baseurl || '/';
 
 app.set('port', port);
 app.use(express.favicon());
