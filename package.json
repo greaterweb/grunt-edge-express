@@ -31,8 +31,7 @@
   "dependencies": {
     "express": "~3.2.5",
     "forever-monitor": "~1.2.2",
-    "nopt": "~2.1.1",
-    "q": "~0.9.6"
+    "nopt": "~2.1.1"
   },
   "devDependencies": {
     "matchdep": "~0.1.2",
