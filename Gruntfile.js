@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // start express then run tests
-    grunt.registerTask('test', ['express', 'nodeunit']);
+    grunt.registerTask('test', ['express', 'nodeunit','express:stop']);
 
     // By default, lint and run all tests.
     grunt.registerTask('default', ['jshint', 'test']);

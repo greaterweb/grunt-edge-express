@@ -25,6 +25,15 @@ module.exports = function(grunt) {
     var portsInUse = [],
         servers = [];
 
+    // make sure all server are taken down when grunt exits.
+    process.on('exit', function() {
+        grunt.util._(servers).forEach(function (server) {
+            if (server[1].running) {
+                server[1].child.kill();
+            }
+        });
+    });
+
     grunt.registerMultiTask('express', 'Start an express web server.', function () {
         var done = this.async(),
             // Merge task-specific and/or target-specific options with these defaults.
@@ -61,7 +70,9 @@ module.exports = function(grunt) {
         });
 
         server.on('start', function () {
-            done();
+            setTimeout(function() {
+                done();
+            }, 500);
         });
 
         if (options.debug) {
@@ -73,13 +84,6 @@ module.exports = function(grunt) {
         server.start();
 
         servers.push([targetName, server]);
-
-        // make sure all server are taken down when grunt exits.
-        process.on('exit', function() {
-            if (server.running) {
-                server.stop();
-            }
-        });
 
     });
 
